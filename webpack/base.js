@@ -4,15 +4,26 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
+  entry: "./src/scripts/index.ts",
   mode: "development",
   devtool: "eval-source-map",
+  resolve: {
+    extensions: [".ts", ".tsx", ".js"]
+  },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.js?/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader"
+        }
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "ts-loader"
         }
       },
       {
