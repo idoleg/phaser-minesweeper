@@ -25,8 +25,14 @@ export class Board extends Phaser.Events.EventEmitter {
         return this._rows;
     }
 
+    public getField(row: number, col: number) {
+        return this._fields.find((field) => field.row === row && field.col === col );
+    }
+
     private _create(): void {
         this._createFields();
+        this._createBombs();
+        this._createValues();
     }
 
     private _createFields(): void {
@@ -35,5 +41,30 @@ export class Board extends Phaser.Events.EventEmitter {
                 this._fields.push(new Field(this._scene, this, row, col));
             }
         }
+    }
+
+    private _createBombs(): void {
+        let count = this._bombs;
+
+        while (count > 0) {
+            const field = this._fields[Phaser.Math.Between(0, this._fields.length - 1)];
+
+            if (field.empty) {
+                field.setBomb();
+                --count;
+            }
+        }
+    }
+
+    private _createValues() {
+        this._fields.forEach((field) => {
+            if (field.mined) {
+                field.getClosestFields().forEach((item) => {
+                    if (item.value >= 0) {
+                        ++item.value;
+                    }
+                });
+            }
+        });
     }
 }
