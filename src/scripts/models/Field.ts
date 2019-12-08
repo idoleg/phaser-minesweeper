@@ -1,4 +1,4 @@
-import { FieldView } from "../views/FieldViews";
+import { FieldView } from "../views/FieldView";
 import { Board } from "./Board";
 
 const Positions = [
@@ -11,18 +11,13 @@ const Positions = [
     { row: -1, col: -1 },
 ];
 
-export class Field extends Phaser.Events.EventEmitter {
-    private _scene: Phaser.Scene = null;
-    private _board: Board = null;
-    private _row: number = 0;
-    private _col: number = 0;
-    private _view: FieldView = null;
-    private _value: number = 0;
+enum States {
+    Closed = "closed",
+    Opened = "opened",
+    Marked = "flag",
+}
 
-    constructor(scene: Phaser.Scene, board: Board, row: number, col: number) {
-        super();
-        this._init(scene, board, row, col);
-    }
+export class Field extends Phaser.Events.EventEmitter {
 
     public get row(): number {
         return this._row;
@@ -60,8 +55,58 @@ export class Field extends Phaser.Events.EventEmitter {
         return this._value > 0;
     }
 
+    public set exploded(exploded: boolean) {
+        this._exploded = exploded;
+        this.emit("change");
+    }
+
+    public get exploded(): boolean {
+        return this._exploded;
+    }
+
+    public get marked(): boolean {
+        return this._state === States.Marked;
+    }
+
+    public get closed(): boolean {
+        return this._state === States.Closed;
+    }
+
+    public get opened(): boolean {
+        return this._state === States.Opened;
+    }
+
+    public get completed(): boolean {
+        return this.marked && this.mined;
+    }
+    private _scene: Phaser.Scene = null;
+    private _board: Board = null;
+    private _row: number = 0;
+    private _col: number = 0;
+    private _view: FieldView = null;
+    private _value: number = 0;
+    private _state: string = States.Closed;
+    private _exploded: boolean = false;
+
+    constructor(scene: Phaser.Scene, board: Board, row: number, col: number) {
+        super();
+        this._init(scene, board, row, col);
+    }
+
     public setBomb(): void {
         this._value = -1;
+    }
+
+    public addFlag(): void {
+        this._setState(States.Marked);
+    }
+
+    public removeFlag(): void {
+        this._setState(States.Closed);
+    }
+
+    public open(): void {
+        this._setState(States.Opened);
     }
 
     public getClosestFields(): Field[] {
@@ -76,6 +121,13 @@ export class Field extends Phaser.Events.EventEmitter {
         });
 
         return results;
+    }
+
+    private _setState(state: string): void {
+        if (this._state !== state) {
+            this._state = state;
+            this.emit("change");
+        }
     }
 
     private _init(scene: Phaser.Scene, board: Board, row: number, col: number) {
