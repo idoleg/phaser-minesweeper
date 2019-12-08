@@ -1,6 +1,5 @@
 import { Field} from "./Field";
 
-
 export class Board extends Phaser.Events.EventEmitter {
     private _scene: Phaser.Scene = null;
     private _rows: number = 0;
@@ -31,8 +30,8 @@ export class Board extends Phaser.Events.EventEmitter {
     }
 
     private _createFields(): void {
-        for (let row = 0; row < this._rows; row++){
-            for (let col = 0; col < this._cols; col++){
+        for (let row = 0; row < this._rows; row++) {
+            for (let col = 0; col < this._cols; col++) {
                 this._fields.push(new Field(this._scene, this, row, col));
             }
         }

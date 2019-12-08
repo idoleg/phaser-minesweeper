@@ -6,7 +6,7 @@ const Bombs = 8;
 
 export class GameScene extends Phaser.Scene {
     private _board: Board = null;
-    
+
     constructor() {
         super("Game");
     }

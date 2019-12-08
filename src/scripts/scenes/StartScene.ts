@@ -1,5 +1,4 @@
-//import spritesheetPng from "../assets/spritesheet.png";
-//import spritesheetJson from "../assets/spritesheet.json";
+/* tslint:disable:no-var-requires */
 const spritesheetPng = require("../../assets/spritesheet.png");
 const spritesheetJson = require("../../assets/spritesheet.json");
 
@@ -27,14 +26,14 @@ export class StartScene extends Phaser.Scene {
             this.cameras.main.centerX,
             this.cameras.main.centerY - 100,
             Texts.Title,
-            {font: `52px ${Styles.Font}`, fill: Styles.Color}
+            {font: `52px ${Styles.Font}`, fill: Styles.Color},
         ).setOrigin(0.5);
 
         this.add.text(
             this.cameras.main.centerX,
             this.cameras.main.centerY + 100,
             Texts.Message,
-            {font: `28px ${Styles.Font}`, fill: Styles.Color}
+            {font: `28px ${Styles.Font}`, fill: Styles.Color},
         ).setOrigin(0.5);
 
         this.input.once("pointerdown", () => {

@@ -1,5 +1,5 @@
-import { Board } from "./Board";
 import { FieldView } from "../views/FieldViews";
+import { Board } from "./Board";
 
 export class Field extends Phaser.Events.EventEmitter {
     private _scene: Phaser.Scene = null;
@@ -29,7 +29,7 @@ export class Field extends Phaser.Events.EventEmitter {
         return this._view;
     }
 
-    private _init (scene: Phaser.Scene, board: Board, row: number, col: number) {
+    private _init(scene: Phaser.Scene, board: Board, row: number, col: number) {
         this._scene = scene;
         this._board = board;
         this._row = row;

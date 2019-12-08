@@ -1,10 +1,10 @@
 import { Field } from "../models/Field";
 
-interface Vec2 {x: number, y: number};
+interface IVec2 { x: number; y: number; }
 
 export class FieldView extends Phaser.GameObjects.Sprite {
     private _model: Field = null;
-    private _postition: Vec2 = {x: 0, y: 0}
+    private _postition: IVec2 = {x: 0, y: 0};
 
     constructor(scene: Phaser.Scene, model: Field) {
         super(scene, 0, 0, "spritesheet", "closed");
@@ -13,11 +13,11 @@ export class FieldView extends Phaser.GameObjects.Sprite {
         this._create();
     }
 
-    private get _offset(): Vec2 {
+    private get _offset(): IVec2 {
         return {
             x: (this.scene.cameras.main.width - this._model.board.cols * this.width) / 2,
-            y: (this.scene.cameras.main.height - this._model.board.rows * this.height) / 2
-        }
+            y: (this.scene.cameras.main.height - this._model.board.rows * this.height) / 2,
+        };
     }
 
     private _init(): void {
